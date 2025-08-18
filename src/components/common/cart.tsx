@@ -13,8 +13,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import CartItem from "./cart-item";
+
 export const Cart = () => {
-  const { data: cart } = useQuery({
+  const { data: cart, isPending: cartIsLoading } = useQuery({
     queryKey: ["cart"],
     queryFn: () => getCart(),
   });
@@ -29,6 +31,20 @@ export const Cart = () => {
         <SheetHeader>
           <SheetTitle>Carrinho</SheetTitle>
         </SheetHeader>
+        <div className="space-y-4 px-5">
+          {cartIsLoading && <div>Carregando...</div>}
+          {cart?.items.map((item) => (
+            <CartItem
+              key={item.id}
+              id={item.id}
+              productName={item.productVariant.product.name}
+              productVariantName={item.productVariant.name}
+              productVariantImageUrl={item.productVariant.imageUrl}
+              productVariantPriceInCents={item.productVariant.priceInCents}
+              quantity={item.quantity}
+            />
+          ))}
+        </div>
       </SheetContent>
     </Sheet>
   );
