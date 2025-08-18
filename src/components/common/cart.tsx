@@ -1,11 +1,23 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import { ShoppingBasketIcon } from "lucide-react";
 
+import { getCart } from "@/actions/get-cart";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export const Cart = () => {
+  const { data: cart } = useQuery({
+    queryKey: ["cart"],
+    queryFn: () => getCart(),
+  });
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -13,7 +25,11 @@ export const Cart = () => {
           <ShoppingBasketIcon />
         </Button>
       </SheetTrigger>
-      <SheetContent></SheetContent>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Carrinho</SheetTitle>
+        </SheetHeader>
+      </SheetContent>
     </Sheet>
   );
 };
