@@ -8,6 +8,8 @@ import { db } from "@/db";
 import { auth } from "@/lib/auth";
 
 import CartSummary from "../components/cart-summary";
+import { formatAddress } from "../helpers/address";
+import FinishOrderButton from "./components/finish-order-button";
 
 const ConfirmationPage = async () => {
   const session = await auth.api.getSession({
@@ -52,9 +54,10 @@ const ConfirmationPage = async () => {
           <CardContent className="space-y-6">
             <Card>
               <CardContent>
-                <p className="text-sm"></p>
+                <p className="text-sm">{formatAddress(cart.shippingAddress)}</p>
               </CardContent>
             </Card>
+            <FinishOrderButton />
           </CardContent>
         </Card>
         <CartSummary
