@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { toast } from "sonner";
@@ -24,7 +24,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { shippingAddressTable } from "@/db/schema";
 import { useCreateShippingAddress } from "@/hooks/mutations/use-create-shipping-address";
 import { useUpdateCartShippingAddress } from "@/hooks/mutations/use-update-cart-shipping-address";
-import { useCart } from "@/hooks/queries/use-cart";
 import { useUserAddresses } from "@/hooks/queries/use-user-addresses";
 
 const formSchema = z.object({
@@ -61,14 +60,6 @@ const Addresses = ({
   const { data: addresses, isLoading } = useUserAddresses({
     initialData: shippingAddresses,
   });
-
-  const { data: cart } = useCart();
-
-  useEffect(() => {
-    if (cart?.shippingAddress?.id) {
-      setSelectedAddress(cart.shippingAddressId);
-    }
-  }, [cart]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
